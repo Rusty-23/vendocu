@@ -91,7 +91,7 @@
                 document.cookie = `g_token=${response.credential}; path=/;`;
 
                 // Redirect to index.html
-                window.location = 'check_user.php';
+                window.location = 'require.php';
             }
         </script>
         <script src="https://accounts.google.com/gsi/client" async defer></script>
