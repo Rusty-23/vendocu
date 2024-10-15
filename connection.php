@@ -1,9 +1,9 @@
 <?php
 // Database configuration
 $host = 'localhost'; // usually localhost
-$db_name = 'vendocu'; // replace with your database name
-$username = 'root'; // usually 'root' for XAMPP
-$password = ''; // default password for XAMPP MySQL is empty
+$db_name = 'vendocu';
+$username = 'root';
+$password = 'llames';
 
 // Create connection
 $conn = new mysqli($host, $username, $password, $db_name);
