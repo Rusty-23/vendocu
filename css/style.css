@@ -1,0 +1,215 @@
+
+.navbar {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+    color: #ffffff !important; /* Adjust link color */
+    font-size: 1.5rem; /* Larger font size for visibility */
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Slight hover effect */
+    border-radius: 10px; /* Rounded corners for hover */
+    transform: scale(1.1); /* Subtle scale effect on hover */
+}
+/* Target only the tab text */
+.tab-text {
+    color: black !important;
+}
+
+
+
+.dropdown-toggle::after {
+    display: none; /* Remove default caret */
+}
+
+.dropdown-menu {
+    background-color: #135701; /* Match dropdown background with navbar */
+    border: none; /* Remove border */
+}
+
+.dropdown-item {
+    color: #ffffff; /* Dropdown item text color */
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect for dropdown */
+}
+
+.navbar-brand img {
+    margin-right: 15px; /* Spacing next to the logo */
+}
+.logout-btn {
+    font-size: 1rem; /* Font size */
+    padding: 10px 15px; /* Padding for the button */
+    border-radius: 5px; /* Rounded corners */
+    transition: background-color 0.3s, transform 0.2s; /* Transition effects */
+}
+
+.logout-btn:hover {
+    background-color: #c82333; /* Darker shade on hover */
+    transform: scale(1.05); /* Scale effect on hover */
+}
+
+.dropdown-menu {
+    background-color: #135701; /* Match dropdown background with navbar */
+    border: none; /* Remove border */
+}
+
+.dropdown-item {
+    color: #ffffff; /* Dropdown item text color */
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Hover effect for dropdown */
+}
+/* Container and Table Styling */
+.container {
+    background-color: #f8f9fa; /* Light background for contrast */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow for a 3D effect */
+    
+}
+
+h1 {
+    color: #135701; /* Use theme color */
+    font-weight: bold;
+}
+
+.table {
+    margin-top: 20px;
+    font-size: 1.2rem; /* Increase table font size for readability */
+}
+
+.table th, .table td {
+    text-align: center; /* Center-align table content */
+    vertical-align: middle;
+}
+
+.thead-dark th {
+    background-color: #135701; /* Match header with theme color */
+    color: white; /* White text on the dark header */
+}
+
+/* Button Styling */
+.btn-action {
+    margin: 5px;
+    font-size: 1rem;
+    padding: 8px 12px;
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.btn-success {
+    background-color:  #135701;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-action:hover {
+    transform: scale(1.05); /* Slight scale effect on hover */
+}
+
+.btn-primary {
+    background-color: #135701; /* Submit button with theme color */
+    border: none;
+    padding: 10px 20px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0f4701;
+    transform: scale(1.05);
+}
+
+/* Default styling for the tabs */
+.nav-tabs .navlink {
+    font-size: 16px; /* Default font size for larger screens */
+    padding: 10px 15px; /* Adjust padding if needed */
+}
+/* Ensure buttons and collapsible content are responsive */
+.btn-see-more {
+    padding: 8px 12px; /* Adjust padding for smaller screens */
+    font-size: 1rem; /* Ensure text is readable */
+}
+
+.collapse-inner {
+    overflow: hidden; /* Prevent overflow */
+}
+
+/* Adjust padding for collapse tables */
+.collapse table {
+    width: 100%;
+    max-width: 100%; /* Prevent it from exceeding container */
+    table-layout: auto; /* Allow table to be responsive */
+}
+
+/* For tablets and smaller screens */
+@media (max-width: 768px) {
+    .nav-tabs .nav-link {
+        font-size: 14px; /* Smaller font size */
+        padding: 8px 12px; /* Optional: adjust padding for smaller screens */
+    }
+}
+
+/* For mobile devices */
+@media (max-width: 576px) {
+    .nav-tabs .nav-link {
+        font-size: 12px; /* Even smaller font size */
+        padding: 6px 10px; /* Optional: further adjust padding for very small screens */
+    }
+}
+/* Default table styling */
+.table-responsive {
+    overflow-x: hidden; /* Enable horizontal scrolling */
+}
+
+table {
+    width: 100%; /* Ensure the table takes up the full width */
+    font-size: 16px; /* Default font size */
+    overflow: hidden;
+}
+
+/* Responsive for tablet screens */
+@media (max-width: 768px) {
+    table {
+        font-size: 14px; /* Smaller font size */
+    }
+    
+    table th, table td {
+        padding: 8px; /* Reduce padding for smaller screens */
+    }
+}
+
+/* Responsive for mobile screens */
+@media (max-width: 576px) {
+    .collapse-inner {
+        padding: 10px; /* Add padding for mobile */
+    }
+    
+    .btn-see-more {
+        width: 100%; /* Full-width button on mobile */
+        margin-top: 10px; /* Space above button */
+    }
+
+    .table th, .table td {
+        padding: 5px; /* Reduce padding in table for mobile */
+        font-size: 0.8rem; /* Smaller font size */
+    }
+
+    /* Optional: Hide less important columns on mobile */
+    .table .hide-on-mobile {
+        display: none; /* Hide columns with this class */
+    }
+}
+
+.table td {
+    word-wrap: break-word; /* Ensures long words wrap onto the next line */
+}
+
