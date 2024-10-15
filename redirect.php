@@ -1,3 +1,4 @@
 <?php
-require_once './require.php';
-checkAccess('student'); // Check if user is a student
+
+header("Location: ./student/index.php");
+exit();

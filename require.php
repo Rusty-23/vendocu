@@ -4,19 +4,29 @@ session_start();
 require_once 'connection.php'; // Include your database connection
 
 // Function to extract email from the JSON token in the cookie
-function extractEmailFromToken($token) {
-    $parts = explode('.', $token);
-    if (count($parts) === 3) {
-        $payload = base64_decode($parts[1]);
-        $data = json_decode($payload, true); // Decode JSON payload
-        if (json_last_error() === JSON_ERROR_NONE && isset($data['email'])) {
-            return $data['email']; // Return email if it exists
-        }
+
+function extractEmailFromToken($token)
+{
+    $googleClient = new GoogleClient(
+        "VenDocu",
+        "70089890797-e9pmqvs239pog7ltvq054sgo0k88r351.apps.googleusercontent.com",
+        "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",
+        "http://localhost/xampploc/black/home.php"
+    );
+
+    $googleClient->getClient()->addScope("email");
+    $googleClient->getClient()->addScope("profile");
+
+    $token = $googleClient->getClient()->verifyIdToken($token);
+    if (!$token) {
+        return null;
     }
+    return $token['email'];
 }
 
 // Function to check access
-function checkAccess($requiredRole) {
+function checkAccess($requiredRole)
+{
     global $conn; // Use the global connection variable
 
     if (isset($_COOKIE['g_token'])) {
@@ -26,7 +36,7 @@ function checkAccess($requiredRole) {
         if ($email) {
             // Check if the user is an admin
             $stmt = $conn->prepare("SELECT email FROM registrar_accounts WHERE email = ?");
-            $stmt->bind_param("s", $email);          
+            $stmt->bind_param("s", $email);
 
             $stmt->execute();
             $stmt->store_result();
@@ -48,13 +58,12 @@ function checkAccess($requiredRole) {
                 }
             }
         } else {
-            header("Location: ../login.php"); // Redirect to login
+            header("Location: ../login.php?message=Invalid authentication token"); // Redirect to login
             exit();
         }
     } else {
         // No authentication token found
-        header("Location: ../login.php"); // Redirect to login
+        header("Location: ../login.php?message=Authentication token not found"); // Redirect to login
         exit();
     }
 }
-?>
