@@ -5,6 +5,9 @@ require_once '../connection.php'; // Include database connection
 require_once './inclusion/token.php';
 require_once '../require.php'; // Include the access control file
 checkAccess('admin'); // Check if user is an admin
+
+require_once '../lib/S3BucketClient.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -159,6 +162,15 @@ function displayRequests($conn, $status) {
             $stmt_details->execute();
             $doc_result = $stmt_details->get_result();
             $doc_row = $doc_result->fetch_assoc();
+            $file_name = $doc_row['document_link'];
+
+            $BUCKET = 'vendocu-datastore';
+            $url = '#';
+            if (!empty($file_name)) {
+                $client = new S3BucketClient($BUCKET);
+                $url = $client->getPresignedUrl($file_name);
+            }
+
 
             // Displaying document details in a table format
             echo "<table class='table table-bordered'>
@@ -179,7 +191,7 @@ function displayRequests($conn, $status) {
                             <td>{$doc_row['section']}</td>
                             <td>{$doc_row['course']}</td>
                             <td>{$doc_row['doc_year']}</td>
-                            <td><a href='" . $doc_row['document_link'] . "' target='_blank'>View Document</a></td>
+                            <td><a href='" . $url . "' target='_blank'>View Document</a></td>
                         </tr>
                     </tbody>
                   </table>";

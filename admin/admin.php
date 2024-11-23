@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploaded_document'])
 
             // Update the request in the database with the S3 file URL and set status to 'confirmed'
             $stmt = $conn->prepare("UPDATE request SET document_link = ?, request_status = 'confirmed' WHERE request_id = ?");
-            $stmt->bind_param("si", $fileUrl, $requestId);
+            $stmt->bind_param("si", $fileName, $requestId);
 
             if ($stmt->execute()) {
                 // Return success response
