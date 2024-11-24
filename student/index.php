@@ -39,21 +39,20 @@ function generateUniqueOrderNumber($conn)
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $token['email'];
+
     $orderNumber = generateUniqueOrderNumber($conn);
 
-    // Check if the student is irregular and handle accordingly
-    if (isset($_POST['studentType']) && $_POST['studentType'] === 'irregular') {
-        foreach ($_POST['subjects'] as $index => $subject) {
-            $section = $_POST['sections'][$index];
-            $docYear = $_POST['docYear'][0]; // Assuming same for all
-            $yearLevel = $_POST['yearLevel'][0]; // Assuming same for all
-            $semester = $_POST['semester'][0]; // Assuming same for all
+    foreach ($_POST['documentType'] as $index => $documentType) {
+        $yearLevel = $_POST['yearLevel'][$index];
+        $docYear = isset($_POST['docYear'][$index]) ? $_POST['docYear'][$index] : null;
+        $semester = $_POST['semester'][$index];
+        $section = $_POST['section'][$index];
+        $course = $_POST['course'][$index];
 
-            // Insert irregular subjects into request table
+        if ($docYear !== null) {
             $stmt = $conn->prepare("INSERT INTO request (email, order_number, document_type, doc_year, year_level, semester, section, course, requested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
             if ($stmt) {
-                $documentType = 'IRREGULAR'; // Use your desired document type for irregular requests
-                $stmt->bind_param("sssiisss", $email, $orderNumber, $documentType, $docYear, $yearLevel, $semester, $section, $subject);
+                $stmt->bind_param("sssiisss", $email, $orderNumber, $documentType, $docYear, $yearLevel, $semester, $section, $course);
                 if (!$stmt->execute()) {
                     echo "Error executing statement: " . $stmt->error;
                 }
@@ -61,30 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
                 echo "Error preparing statement: " . $conn->error;
             }
-        }
-    } else {
-        foreach ($_POST['documentType'] as $index => $documentType) {
-            $yearLevel = $_POST['yearLevel'][$index];
-            $docYear = isset($_POST['docYear'][$index]) ? $_POST['docYear'][$index] : null;
-            $semester = $_POST['semester'][$index];
-            $section = $_POST['section'][$index];
-            $course = $_POST['course'][$index];
-
-            // Insert regular document request
-            if ($docYear !== null) {
-                $stmt = $conn->prepare("INSERT INTO request (email, order_number, document_type, doc_year, year_level, semester, section, course, requested_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-                if ($stmt) {
-                    $stmt->bind_param("sssiisss", $email, $orderNumber, $documentType, $docYear, $yearLevel, $semester, $section, $course);
-                    if (!$stmt->execute()) {
-                        echo "Error executing statement: " . $stmt->error;
-                    }
-                    $stmt->close();
-                } else {
-                    echo "Error preparing statement: " . $conn->error;
-                }
-            } else {
-                echo "Document Year is required.";
-            }
+        } else {
+            echo "Document Year is required.";
         }
     }
 
@@ -140,28 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label>Student Type:</label><br>
-                    <input type="radio" name="studentType" value="regular" checked> Regular
-                    <input type="radio" name="studentType" value="irregular"> Irregular
-                </div>
-
-                <div id="irregularFields" style="display:none;">
-                    <h5>Irregular Subjects</h5>
-                    <div id="subjectContainer">
-                        <div class="row mb-2">
-                            <div class="col-6">
-                                <input type="text" class="form-control" name="subjects[]" placeholder="Subject" required>
-                            </div>
-                            <div class="col-6">
-                                <input type="text" class="form-control" name="sections[]" placeholder="Section" required>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-secondary" id="addSubjectButton">Add Another Subject</button>
-                </div>
-
-                <div class="text-center mt-3">
+                <div class="text-center">
                     <button type="submit" class="btn btn-lg w-100" style="padding: 15px; background-color: #135701; color: #fff;">Submit Request</button>
                 </div>
             </form>
@@ -190,7 +146,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Bootstrap JS and dependencies -->
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
-
 <!-- Custom JS -->
 <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -198,34 +153,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const successModal = new bootstrap.Modal(document.getElementById('successModal'));
         successModal.show();
     }
-
-    const studentTypeRadios = document.querySelectorAll('input[name="studentType"]');
-    const irregularFields = document.getElementById('irregularFields');
-    const subjectContainer = document.getElementById('subjectContainer');
-
-    studentTypeRadios.forEach(radio => {
-        radio.addEventListener('change', () => {
-            if (radio.value === 'irregular') {
-                irregularFields.style.display = 'block';
-            } else {
-                irregularFields.style.display = 'none';
-            }
-        });
-    });
-
-    document.getElementById('addSubjectButton').addEventListener('click', () => {
-        const newSubjectRow = document.createElement('div');
-        newSubjectRow.classList.add('row', 'mb-2');
-        newSubjectRow.innerHTML = `
-            <div class="col-6">
-                <input type="text" class="form-control" name="subjects[]" placeholder="Subject" required>
-            </div>
-            <div class="col-6">
-                <input type="text" class="form-control" name="sections[]" placeholder="Section" required>
-            </div>
-        `;
-        subjectContainer.appendChild(newSubjectRow);
-    });
 </script>
 
 </body>
